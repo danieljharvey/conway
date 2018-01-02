@@ -12,13 +12,17 @@ let styles =
     Style.(
       {
         "wrapper": style([padding(Pt(10.0)), marginTop(Pt(-10.0))]),
-        "text": style([fontSize(Float(16.0)), color("red"), padding(Pt(10.0))])
+        "text": style([fontSize(Float(16.0)), color("red"), padding(Pt(10.0))]),
+        "canvas": style([width(Pct(100.0)), height(Pct(100.0))])
       }
     )
   );
 
 let reverseString = str => str ++ "!";
 
+let html: string = "<canvas id='canvas' style='background-color: black;'/>";
+
+/*let handleCanvas = canvas => Js.log(canvas);*/
 let make = _children => {
   ...component,
   initialState: () => {title: "horses"},
@@ -31,5 +35,6 @@ let make = _children => {
       <Text style=styles##text onPress=(self.reduce(() => Reverse))>
         (ReasonReact.stringToElement(self.state.title))
       </Text>
+      <WebView />
     </View>
 };
