@@ -20,7 +20,11 @@ let styles =
 
 let reverseString = str => str ++ "!";
 
-let html: string = "<canvas id='canvas' style='background-color: black;'/>";
+let grid = [
+  [1, 2, 3],
+  [1, 2, 3],
+  [1, 2, 3]
+];
 
 /*let handleCanvas = canvas => Js.log(canvas);*/
 let make = _children => {
@@ -35,6 +39,6 @@ let make = _children => {
       <Text style=styles##text onPress=(self.reduce(() => Reverse))>
         (ReasonReact.stringToElement(self.state.title))
       </Text>
-      <WebView />
+      <Grid grid />
     </View>
 };
