@@ -1,30 +1,58 @@
 open BsReactNative;
 
 /* next steps - styles to make items into actual grid */
+let styles =
+  StyleSheet.create(
+    Style.(
+      {
+        "grid":
+          style([width(Pct(100.0)), height(Pt(400.0)), flexDirection(Column)]),
+        "row": style([flexDirection(Row), flex(1.0)]),
+        "item": style([flex(1.0)]),
+        "full": style([flex(1.0), backgroundColor("red")]),
+        "empty": style([flex(1.0), backgroundColor("green")])
+      }
+    )
+  );
 
 let component = ReasonReact.statelessComponent("Grid");
 
-let drawItem = (item: int) =>
+let drawFull = <View style=styles##full />;
+
+let drawEmpty = <View style=styles##empty />;
+
+let drawSquare = (valid: bool) => valid ? drawFull : drawEmpty;
+
+let drawItem = (changeItem, y: int, x: int, item: bool) =>
+  <View style=styles##item key=(string_of_int(x))>
+    <TouchableHighlight onPress=(() => changeItem(x, y))>
+      (drawSquare(item))
+    </TouchableHighlight>
     <Text>
-        {ReasonReact.stringToElement("Thing")}
-    </Text>;
+      (
+        ReasonReact.stringToElement(
+          string_of_int(x) ++ ", " ++ string_of_int(y)
+        )
+      )
+    </Text>
+  </View>;
 
-let drawRow = (row: list(int)) =>
-    <View>
-        {ReasonReact.arrayToElement(
-            Array.map(drawItem, Array.of_list(row))
-        )}
-    </View>;
+let drawRow = (changeItem, y: int, row: list(bool)) =>
+  <View style=styles##row key=(string_of_int(y))>
+    (
+      ReasonReact.arrayToElement(
+        Array.mapi(drawItem(changeItem, y), Array.of_list(row))
+      )
+    )
+  </View>;
 
-let make = (~grid, _children) => {
+let make = (~grid, ~changeItem, _children) => {
   ...component,
-  render: (self) => {
-    let repoItems = ReasonReact.arrayToElement(
-        Array.map(drawRow, Array.of_list(grid))
-    );
-
-    <View>
-      {repoItems}
-    </View>
+  render: self => {
+    let repoItems =
+      ReasonReact.arrayToElement(
+        Array.mapi(drawRow(changeItem), Array.of_list(grid))
+      );
+    <View style=styles##grid> repoItems </View>;
   }
 };
