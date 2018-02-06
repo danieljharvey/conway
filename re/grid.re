@@ -25,7 +25,7 @@ let drawSquare = (valid: bool) => valid ? drawFull : drawEmpty;
 
 let drawItem = (changeItem, y: int, x: int, item: bool) =>
   <View style=styles##item key=(string_of_int(x))>
-    <TouchableHighlight onPress=(() => changeItem(x, y))>
+    <TouchableHighlight onPress=(() => changeItem())>
       (drawSquare(item))
     </TouchableHighlight>
     <Text>
