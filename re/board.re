@@ -43,7 +43,7 @@ let reducer = (action, state) =>
     ReasonReact.Update({title: state.title, grid: reverseItem(grid, x, y)})
   };
 
-let changeItem = (x, y) => SwitchItem(x, y);
+let changeItem = (reduce, x, y) => reduce((_) => SwitchItem(x, y));
 
 /* ReasonReact.Update({grid: reverseItem(grid, x, y)}) */
 /*let handleCanvas = canvas => Js.log(canvas);*/
@@ -51,11 +51,11 @@ let make = _children => {
   ...component,
   initialState,
   reducer,
-  render: self =>
+  render: ({state, reduce}) =>
     <View style=styles##wrapper>
-      <Text style=styles##text onPress=(self.reduce(() => Reverse))>
-        (ReasonReact.stringToElement(self.state.title))
+      <Text style=styles##text onPress=(reduce(() => Reverse))>
+        (ReasonReact.stringToElement(state.title))
       </Text>
-      <Grid grid=self.state.grid changeItem=(self.reduce(changeItem)) />
+      <Grid grid=state.grid changeItem=(changeItem(reduce)) />
     </View>
 };
