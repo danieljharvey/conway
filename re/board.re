@@ -21,6 +21,8 @@ let styles =
     )
   );
 
+let makeAGrid = (size: int) => {};
+
 let grid = [
   [false, false, false, false, false, false, false],
   [false, false, false, false, false, false, false],
@@ -51,6 +53,12 @@ let changeSingleItem = (reduce, x, y) => reduce(() => SwitchItem(x, y));
 
 let make = _children => {
   ...component,
+  subscriptions: self => [
+    Sub(
+      () => Js.Global.setInterval(self.reduce(() => BoardMove), 1000),
+      Js.Global.clearInterval
+    )
+  ],
   initialState,
   reducer,
   render: self =>
