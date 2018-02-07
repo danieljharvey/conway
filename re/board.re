@@ -1,13 +1,16 @@
 open BsReactNative;
 
+type grid = list(list(bool));
+
 type state = {
   title: string,
-  grid: list(list(bool))
+  grid
 };
 
 type action =
   | Reverse
-  | SwitchItem(int, int);
+  | SwitchItem(int, int)
+  | BoardMove;
 
 let component = ReasonReact.reducerComponent("Board");
 
@@ -37,16 +40,12 @@ let grid = [
 
 let initialState = () => {title: "horses", grid};
 
-let reverseRow = (x, y, nY, row) =>
-  Array.to_list(
-    Array.mapi(
-      (nX, item) => nX === x && nY === y ? ! item : item,
-      Array.of_list(row)
-    )
-  );
-
 let reverseItem = (grid, x, y) =>
-  Array.to_list(Array.mapi(reverseRow(x, y), Array.of_list(grid)));
+  List.mapi(
+    (nY, row) =>
+      List.mapi((nX, item) => nX === x && nY === y ? ! item : item, row),
+    grid
+  );
 
 let reducer = (action, state) =>
   switch action {
@@ -57,6 +56,8 @@ let reducer = (action, state) =>
       title: state.title,
       grid: reverseItem(state.grid, x, y)
     })
+  | BoardMove =>
+    ReasonReact.Update({title: state.title, grid: Life.boardMove(state.grid)})
   };
 
 let changeSingleItem = (reduce, x, y) => reduce(() => SwitchItem(x, y));
@@ -69,7 +70,7 @@ let make = _children => {
   reducer,
   render: self =>
     <View style=styles##wrapper>
-      <Text style=styles##text onPress=(self.reduce(() => Reverse))>
+      <Text style=styles##text onPress=(self.reduce(() => BoardMove))>
         (ReasonReact.stringToElement(self.state.title))
       </Text>
       <Grid grid=self.state.grid changeItem=(changeSingleItem(self.reduce)) />
