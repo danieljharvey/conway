@@ -9,7 +9,8 @@ let styles =
           style([width(Pct(100.0)), height(Pt(400.0)), flexDirection(Column)]),
         "row": style([flexDirection(Row), flex(1.0)]),
         "item": style([flex(1.0)]),
-        "full": style([flex(1.0), backgroundColor("red")]),
+        "highlight": style([flex(1.0)]),
+        "full": style([flex(1.0), backgroundColor("blue")]),
         "empty": style([flex(1.0), backgroundColor("green")])
       }
     )
@@ -25,7 +26,7 @@ let drawSquare = (valid: bool) => valid ? drawFull : drawEmpty;
 
 let drawItem = (changeItem, y: int, x: int, item: bool) =>
   <View style=styles##item key=(string_of_int(x))>
-    <TouchableHighlight onPress=(() => changeItem())>
+    <TouchableHighlight style=styles##highlight onPress=(() => changeItem())>
       (drawSquare(item))
     </TouchableHighlight>
     <Text>

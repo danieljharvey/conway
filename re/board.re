@@ -26,10 +26,12 @@ let styles =
 let reverseString = str => str ++ "!";
 
 let grid = [
-  [false, true, false, true],
-  [true, false, true, false],
-  [false, true, false, true],
-  [true, false, true, false]
+  [false, true, false, true, false, true],
+  [true, false, true, false, true, false],
+  [false, true, false, true, false, true],
+  [true, false, true, false, true, false],
+  [false, true, false, true, false, true],
+  [true, false, true, false, true, false]
 ];
 
 let initialState = () => {title: "horses", grid};
@@ -68,11 +70,14 @@ let make = _children => {
   ...component,
   initialState,
   reducer,
-  render: ({state, reduce}) =>
+  render: self =>
     <View style=styles##wrapper>
-      <Text style=styles##text onPress=(reduce(() => Reverse))>
-        (ReasonReact.stringToElement(state.title))
+      <Text style=styles##text onPress=(self.reduce(() => ChangeOne))>
+        (ReasonReact.stringToElement(self.state.title))
       </Text>
-      <Grid grid=state.grid changeItem=(reduce(() => ChangeOne)) />
+      <Grid
+        grid=self.state.grid
+        changeItem=(self.reduce(() => SwitchItem(1, 1)))
+      />
     </View>
 };
