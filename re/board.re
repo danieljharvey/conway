@@ -2,13 +2,9 @@ open BsReactNative;
 
 type grid = list(list(bool));
 
-type state = {
-  title: string,
-  grid
-};
+type state = grid;
 
 type action =
-  | Reverse
   | SwitchItem(int, int)
   | BoardMove;
 
@@ -25,8 +21,6 @@ let styles =
     )
   );
 
-let reverseString = str => str ++ "!";
-
 let grid = [
   [false, false, false, false, false, false, false],
   [false, false, false, false, false, false, false],
@@ -38,7 +32,7 @@ let grid = [
   [false, false, false, false, false, false, false]
 ];
 
-let initialState = () => {title: "horses", grid};
+let initialState = () => grid;
 
 let reverseItem = (grid, x, y) =>
   List.mapi(
@@ -49,21 +43,12 @@ let reverseItem = (grid, x, y) =>
 
 let reducer = (action, state) =>
   switch action {
-  | Reverse =>
-    ReasonReact.Update({title: reverseString(state.title), grid: state.grid})
-  | SwitchItem(x, y) =>
-    ReasonReact.Update({
-      title: state.title,
-      grid: reverseItem(state.grid, x, y)
-    })
-  | BoardMove =>
-    ReasonReact.Update({title: state.title, grid: Life.boardMove(state.grid)})
+  | SwitchItem(x, y) => ReasonReact.Update(reverseItem(state, x, y))
+  | BoardMove => ReasonReact.Update(Life.boardMove(state))
   };
 
 let changeSingleItem = (reduce, x, y) => reduce(() => SwitchItem(x, y));
 
-/* ReasonReact.Update({grid: reverseItem(grid, x, y)}) */
-/*let handleCanvas = canvas => Js.log(canvas);*/
 let make = _children => {
   ...component,
   initialState,
@@ -71,8 +56,8 @@ let make = _children => {
   render: self =>
     <View style=styles##wrapper>
       <Text style=styles##text onPress=(self.reduce(() => BoardMove))>
-        (ReasonReact.stringToElement(self.state.title))
+        (ReasonReact.stringToElement("Next move"))
       </Text>
-      <Grid grid=self.state.grid changeItem=(changeSingleItem(self.reduce)) />
+      <Grid grid=self.state changeItem=(changeSingleItem(self.reduce)) />
     </View>
 };

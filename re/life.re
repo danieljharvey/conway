@@ -1,3 +1,6 @@
+type situation =
+  | LiveNeighbours(bool, int);
+
 let safeListGet = (n, list) =>
   n < 0 || n > List.length(list) - 1 ? None : Some(List.nth(list, n));
 
@@ -17,17 +20,25 @@ let getNeighbours = (x, y, grid) =>
 
 let countNeighbours = (x, y, grid) =>
   getNeighbours(x, y, grid)
-  |> List.filter(i => {
-       Js.log(i);
+  |> List.filter(i =>
        switch i {
        | Some(true) => true
        | _ => false
-       };
-     })
+       }
+     )
   |> List.length;
 
+let isLive = (x, y, grid) =>
+  switch (getFromCoord(x, y, grid)) {
+  | Some(true) => true
+  | _ => false
+  };
+
 let getNextItem = (x, y, grid) =>
-  countNeighbours(x, y, grid) > 3 ? true : false;
+  switch (LiveNeighbours(isLive(x, y, grid), countNeighbours(x, y, grid))) {
+  | LiveNeighbours(false, n) => n == 3 ? true : false
+  | LiveNeighbours(true, n) => n == 2 || n == 3 ? true : false
+  };
 
 let boardMove = grid =>
   List.mapi(
