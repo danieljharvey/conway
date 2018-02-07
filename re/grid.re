@@ -10,8 +10,8 @@ let styles =
         "row": style([flexDirection(Row), flex(1.0)]),
         "item": style([flex(1.0)]),
         "highlight": style([flex(1.0)]),
-        "full": style([flex(1.0), backgroundColor("blue")]),
-        "empty": style([flex(1.0), backgroundColor("green")])
+        "full": style([flex(1.0), backgroundColor("black")]),
+        "empty": style([flex(1.0), backgroundColor("white")])
       }
     )
   );
@@ -26,16 +26,9 @@ let drawSquare = (valid: bool) => valid ? drawFull : drawEmpty;
 
 let drawItem = (changeItem, y: int, x: int, item: bool) =>
   <View style=styles##item key=(string_of_int(x))>
-    <TouchableHighlight style=styles##highlight onPress=(() => changeItem())>
+    <TouchableHighlight style=styles##highlight onPress=(changeItem(x, y))>
       (drawSquare(item))
     </TouchableHighlight>
-    <Text>
-      (
-        ReasonReact.stringToElement(
-          string_of_int(x) ++ ", " ++ string_of_int(y)
-        )
-      )
-    </Text>
   </View>;
 
 let drawRow = (changeItem, y: int, row: list(bool)) =>

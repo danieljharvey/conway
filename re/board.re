@@ -7,8 +7,7 @@ type state = {
 
 type action =
   | Reverse
-  | SwitchItem(int, int)
-  | ChangeOne;
+  | SwitchItem(int, int);
 
 let component = ReasonReact.reducerComponent("Board");
 
@@ -26,12 +25,14 @@ let styles =
 let reverseString = str => str ++ "!";
 
 let grid = [
-  [false, true, false, true, false, true],
-  [true, false, true, false, true, false],
-  [false, true, false, true, false, true],
-  [true, false, true, false, true, false],
-  [false, true, false, true, false, true],
-  [true, false, true, false, true, false]
+  [false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false]
 ];
 
 let initialState = () => {title: "horses", grid};
@@ -56,14 +57,10 @@ let reducer = (action, state) =>
       title: state.title,
       grid: reverseItem(state.grid, x, y)
     })
-  | ChangeOne =>
-    ReasonReact.Update({
-      title: state.title,
-      grid: reverseItem(state.grid, 1, 1)
-    })
   };
 
-/*let changeItem = (reduce, x, y) => reduce((_) => SwitchItem(x, y));*/
+let changeSingleItem = (reduce, x, y) => reduce(() => SwitchItem(x, y));
+
 /* ReasonReact.Update({grid: reverseItem(grid, x, y)}) */
 /*let handleCanvas = canvas => Js.log(canvas);*/
 let make = _children => {
@@ -72,12 +69,9 @@ let make = _children => {
   reducer,
   render: self =>
     <View style=styles##wrapper>
-      <Text style=styles##text onPress=(self.reduce(() => ChangeOne))>
+      <Text style=styles##text onPress=(self.reduce(() => Reverse))>
         (ReasonReact.stringToElement(self.state.title))
       </Text>
-      <Grid
-        grid=self.state.grid
-        changeItem=(self.reduce(() => SwitchItem(1, 1)))
-      />
+      <Grid grid=self.state.grid changeItem=(changeSingleItem(self.reduce)) />
     </View>
 };
