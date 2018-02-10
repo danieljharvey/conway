@@ -6,36 +6,54 @@ let styles =
     Style.(
       {
         "grid":
-          style([width(Pct(100.0)), height(Pt(400.0)), flexDirection(Column)]),
+          style([width(Pct(100.0)), height(Pt(600.0)), flexDirection(Column)]),
         "row": style([flexDirection(Row), flex(1.0)]),
         "item": style([flex(1.0)]),
         "highlight": style([flex(1.0)]),
-        "full": style([flex(1.0), backgroundColor("black")]),
-        "empty": style([flex(1.0), backgroundColor("white")])
+        "standard": style([flex(1.0)]),
+        "oneHundred": style([flex(1.0), backgroundColor("black")]),
+        "ninety": style([flex(1.0), backgroundColor("#AA9977")]),
+        "fifty": style([flex(1.0), backgroundColor("#CC99EE")]),
+        "ten": style([flex(1.0), backgroundColor("#FFDDEE")]),
+        "zero": style([flex(1.0), backgroundColor("white")])
       }
     )
   );
 
 let component = ReasonReact.statelessComponent("Grid");
 
-let drawFull = <View style=styles##full />;
+let drawOneHundred = value =>
+  <View
+    style=Style.(
+            style([
+              flex(1.0),
+              backgroundColor(Colours.intToColourString(value))
+            ])
+          )
+  />;
 
-let drawEmpty = <View style=styles##empty />;
+let drawNinety = <View style=styles##ninety />;
 
-let drawSquare = (valid: bool) => valid ? drawFull : drawEmpty;
+let drawFifty = <View style=styles##fifty />;
 
-let drawItem = (changeItem, y: int, x: int, item: bool) =>
+let drawTen = <View style=styles##ten />;
+
+let drawZero = <View style=styles##zero />;
+
+let drawSquare = (value: int) => drawOneHundred(value);
+
+let drawItem = (changeItem, y: int, x: int, item: int) =>
   <View style=styles##item key=(string_of_int(x))>
     <TouchableHighlight style=styles##highlight onPress=(changeItem(x, y))>
       (drawSquare(item))
     </TouchableHighlight>
   </View>;
 
-let drawRow = (changeItem, y: int, row: list(bool)) =>
+let drawRow = (changeItem, y: int, row: list(int)) =>
   <View style=styles##row key=(string_of_int(y))>
     (
       ReasonReact.arrayToElement(
-        Array.mapi(drawItem(changeItem, y), Array.of_list(row))
+        Array.of_list(List.mapi(drawItem(changeItem, y), row))
       )
     )
   </View>;
@@ -45,7 +63,7 @@ let make = (~grid, ~changeItem, _children) => {
   render: self => {
     let repoItems =
       ReasonReact.arrayToElement(
-        Array.mapi(drawRow(changeItem), Array.of_list(grid))
+        Array.of_list(List.mapi(drawRow(changeItem), grid))
       );
     <View style=styles##grid> repoItems </View>;
   }

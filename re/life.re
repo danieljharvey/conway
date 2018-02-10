@@ -1,6 +1,10 @@
 type situation =
   | LiveNeighbours(bool, int);
 
+type grid = list(list(bool));
+
+type colourGrid = list(list(int));
+
 let safeListGet = (n, list) =>
   n < 0 || n > List.length(list) - 1 ? None : Some(List.nth(list, n));
 
