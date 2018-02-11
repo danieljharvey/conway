@@ -1,3 +1,5 @@
+open Rationale;
+
 type situation =
   | LiveNeighbours(bool, int);
 
@@ -5,15 +7,12 @@ type grid = list(list(bool));
 
 type colourGrid = list(list(int));
 
-let safeListGet = (n, list) =>
-  n < 0 || n > List.length(list) - 1 ? None : Some(List.nth(list, n));
+/* why is this function not data last? */
+let optBindFlip = Function.flip(Option.bind);
 
 /* getFromCoord :: int -> int -> list(list(a)) -> Option(a) */
 let getFromCoord = (x: int, y: int, grid) =>
-  switch (safeListGet(y, grid)) {
-  | None => None
-  | Some(items) => safeListGet(x, items)
-  };
+  RList.nth(y, grid) |> optBindFlip(RList.nth(x));
 
 let getNeighbours = (x, y, grid) =>
   List.map(
