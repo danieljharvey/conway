@@ -1,12 +1,14 @@
 {
-    "name":"digdoug",
-    "reason": {
-        "react-jsx": 2
-    },
-    "bsc-flags": ["-bs-super-errors"],
-    "bs-dependencies": ["bs-react-native", "reason-react"],
-    "sources": [{
-        "dir": "re"
-    }],
-    "refmt": 3
+  "name": "conway",
+  "reason": {
+    "react-jsx": 2
+  },
+  "bsc-flags": ["-bs-super-errors"],
+  "bs-dependencies": ["bs-react-native", "reason-react"],
+  "sources": [
+    {
+      "dir": "re"
+    }
+  ],
+  "refmt": 3
 }

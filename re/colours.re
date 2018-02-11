@@ -9,7 +9,17 @@ let getColours = (grid, colours) =>
     colours
   );
 
-let intStr = (int: int) : string => string_of_int(255 - int * 2);
+let checkBounds = (minValue, maxValue, value) =>
+  max(minValue, min(maxValue, value));
+
+let makeBlack = value => value < 20 ? 20 : value;
+
+let makeWhite = value => value > 240 ? 240 : makeBlack(value);
+
+let getColourValue = (value: int) : int =>
+  checkBounds(0, 255, makeWhite(255 - Random.int(20) - value * 2));
+
+let intStr = (int: int) : string => string_of_int(getColourValue(int));
 
 let intToColourString = (value: int) : string =>
   "rgb("

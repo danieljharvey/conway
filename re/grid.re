@@ -1,6 +1,5 @@
 open BsReactNative;
 
-/* next steps - styles to make items into actual grid */
 let styles =
   StyleSheet.create(
     Style.(
@@ -22,7 +21,7 @@ let styles =
 
 let component = ReasonReact.statelessComponent("Grid");
 
-let drawOneHundred = value =>
+let drawSquare = (value: int) =>
   <View
     style=Style.(
             style([
@@ -31,16 +30,6 @@ let drawOneHundred = value =>
             ])
           )
   />;
-
-let drawNinety = <View style=styles##ninety />;
-
-let drawFifty = <View style=styles##fifty />;
-
-let drawTen = <View style=styles##ten />;
-
-let drawZero = <View style=styles##zero />;
-
-let drawSquare = (value: int) => drawOneHundred(value);
 
 let drawItem = (changeItem, y: int, x: int, item: int) =>
   <View style=styles##item key=(string_of_int(x))>
@@ -60,7 +49,7 @@ let drawRow = (changeItem, y: int, row: list(int)) =>
 
 let make = (~grid, ~changeItem, _children) => {
   ...component,
-  render: self => {
+  render: _self => {
     let repoItems =
       ReasonReact.arrayToElement(
         Array.of_list(List.mapi(drawRow(changeItem), grid))
