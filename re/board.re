@@ -59,7 +59,7 @@ let numberListY = [
 ];
 
 let makeGrid = value =>
-  List.map(row => List.map(item => value, numberListX), numberListY);
+  List.map(_row => List.map(_item => value, numberListX), numberListY);
 
 let initialState = () => {
   grid: makeGrid(false),
