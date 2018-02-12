@@ -8,13 +8,7 @@ let styles =
           style([width(Pct(100.0)), height(Pt(600.0)), flexDirection(Column)]),
         "row": style([flexDirection(Row), flex(1.0)]),
         "item": style([flex(1.0)]),
-        "highlight": style([flex(1.0)]),
-        "standard": style([flex(1.0)]),
-        "oneHundred": style([flex(1.0), backgroundColor("black")]),
-        "ninety": style([flex(1.0), backgroundColor("#AA9977")]),
-        "fifty": style([flex(1.0), backgroundColor("#CC99EE")]),
-        "ten": style([flex(1.0), backgroundColor("#FFDDEE")]),
-        "zero": style([flex(1.0), backgroundColor("white")])
+        "highlight": style([flex(1.0)])
       }
     )
   );
